@@ -14,7 +14,7 @@ import {
     ApiTags
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
-import { extname, join } from 'path';
+import { extname, join } from 'node:path';
 import { UsersAuthGuard } from '../common/guards/users-auth.guard';
 
 @ApiTags('Modulo de carga de imagenes')
@@ -42,7 +42,6 @@ export class ImagesController {
                     cb(null, `${baseName}${ext}`);
                 }
             }),
-            // TODO: Agregar limite de tamanio para subida de archivos
             limits: { fileSize: 7 * 1024 * 1024 },
             fileFilter: (_req, file, cb) => {
                 if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {

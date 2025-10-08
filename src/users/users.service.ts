@@ -11,7 +11,7 @@ import { UpdateUserData, UserData, UserDb } from './types/user.types';
 
 @Injectable()
 export class UsersService {
-    constructor(private usersRepository: UsersRepository) {}
+    constructor(private readonly usersRepository: UsersRepository) {}
 
     async createUser(createUserDto: CreateUserDto): Promise<void> {
         const existingUser = await this.usersRepository.findByEmail(

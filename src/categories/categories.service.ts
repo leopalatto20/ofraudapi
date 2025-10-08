@@ -3,7 +3,7 @@ import { CategoriesRepository } from './categories.repository';
 
 @Injectable()
 export class CategoriesService {
-    constructor(private categoriesRepository: CategoriesRepository) {}
+    constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
     async listCategories() {
         return await this.categoriesRepository.getCategories();
