@@ -18,10 +18,10 @@ import { UpdateReportDto } from './dto/update-report.dto';
 @Injectable()
 export class ReportsService {
     constructor(
-        private reportsRepository: ReportsRepository,
-        private statusRepository: StatusRepository,
-        private likesRepository: LikesRepository,
-        private commentsRepository: CommentsRepository
+        private readonly reportsRepository: ReportsRepository,
+        private readonly statusRepository: StatusRepository,
+        private readonly likesRepository: LikesRepository,
+        private readonly commentsRepository: CommentsRepository
     ) {}
 
     async createReport(

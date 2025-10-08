@@ -10,7 +10,7 @@ import { AdminData } from './types/admin.types';
 
 @Injectable()
 export class AdminsService {
-    constructor(private adminsRepository: AdminsRepository) {}
+    constructor(private readonly adminsRepository: AdminsRepository) {}
 
     async countAdmins(): Promise<number> {
         return await this.adminsRepository.count();
