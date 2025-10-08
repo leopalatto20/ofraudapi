@@ -1,9 +1,13 @@
-import { createHash, randomBytes } from 'crypto';
+import * as bcrypt from 'bcrypt';
 
-export const sha256 = (data: string) => {
-    return createHash('sha256').update(data).digest('hex');
+export const createHash = async (data: string): Promise<string> => {
+    const saltRounds = 10;
+    return await bcrypt.hash(data, saltRounds);
 };
 
-export const genSalt = (length = 16) => {
-    return randomBytes(length).toString('hex');
+export const checkHash = async (
+    passwordHash: string,
+    password: string
+): Promise<boolean> => {
+    return await bcrypt.compare(password, passwordHash);
 };

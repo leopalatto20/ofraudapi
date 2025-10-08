@@ -42,6 +42,8 @@ export class ImagesController {
                     cb(null, `${baseName}${ext}`);
                 }
             }),
+            // TODO: Agregar limite de tamanio para subida de archivos
+            limits: { fileSize: 7 * 1024 * 1024 },
             fileFilter: (_req, file, cb) => {
                 if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
                     return cb(
@@ -57,9 +59,10 @@ export class ImagesController {
         if (!file) {
             throw new BadRequestException('No se encontro un archivo');
         }
+        const baseUrl = process.env.BASE_URL;
         return {
             fileKey: file.filename,
-            url: `http://localhost:3000/public/uploads/${file.filename}`
+            url: `${baseUrl}/public/uploads/${file.filename}`
         };
     }
 }

@@ -4,7 +4,7 @@ import {
     NotFoundException
 } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { genSalt, sha256 } from '../utils/hash/hash.util';
+import { checkHash, createHash } from '../utils/hash/hash.util';
 import { AdminsRepository } from './admins.repository';
 import { AdminData } from './types/admin.types';
 
@@ -17,8 +17,10 @@ export class AdminsService {
     }
 
     async createDefaultAdmin(): Promise<void> {
-        const defaultUsername = 'admin';
-        const defaultPassword = 'admin';
+        const defaultUsername = process.env.DEFAULT_USER;
+        const defaultPassword = process.env.DEFAULT_PASSWORD;
+
+        if (!defaultUsername || !defaultPassword) return;
 
         const existingAdmin =
             await this.adminsRepository.findByUsername(defaultUsername);
@@ -27,13 +29,12 @@ export class AdminsService {
             return;
         }
 
-        const hash = sha256(defaultPassword);
-        const salt = genSalt();
-        const hashed_password = sha256(hash + salt);
+        const hashedPassword = await createHash(defaultPassword);
+        const salt = 'salt';
 
         await this.adminsRepository.createAdmin({
             username: defaultUsername,
-            passwordHash: hashed_password,
+            passwordHash: hashedPassword,
             salt: salt
         });
     }
@@ -47,9 +48,8 @@ export class AdminsService {
             throw new ConflictException('Username already in use');
         }
 
-        const hash = sha256(createAdminDto.password);
-        const salt = genSalt();
-        const hashed_password = sha256(hash + salt);
+        const hashed_password = await createHash(createAdminDto.password);
+        const salt = 'salt';
 
         await this.adminsRepository.createAdmin({
             username: createAdminDto.username,
@@ -65,10 +65,8 @@ export class AdminsService {
         const admin = await this.adminsRepository.findByUsername(username);
         if (!admin) return null;
         const hashedPassword = admin.password;
-        const salt = admin.salt;
-        const hash = sha256(password);
-        const newHash = sha256(hash + salt);
-        if (newHash !== hashedPassword) return null;
+        const success = await checkHash(hashedPassword, password);
+        if (!success) return null;
         return admin;
     }
 
