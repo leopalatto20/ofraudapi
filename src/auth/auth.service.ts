@@ -84,7 +84,7 @@ export class AuthService {
     async logoutUser(refreshToken: string): Promise<void> {
         try {
             const payload = this.tokenService.decodeRefreshToken(refreshToken);
-            if (payload && payload.sub) {
+            if (payload?.sub) {
                 await this.usersService.clearRefreshToken(payload.sub);
             } else {
                 throw new UnauthorizedException('Refresh token inválido');
@@ -159,7 +159,7 @@ export class AuthService {
     async logoutAdmin(refreshToken: string): Promise<void> {
         try {
             const payload = this.tokenService.decodeRefreshToken(refreshToken);
-            if (payload && payload.sub) {
+            if (payload?.sub) {
                 await this.adminsService.clearRefreshToken(payload.sub);
             } else {
                 throw new UnauthorizedException('Refresh token inválido');
