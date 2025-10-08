@@ -30,12 +30,10 @@ export class AdminsService {
         }
 
         const hashedPassword = await createHash(defaultPassword);
-        const salt = 'salt';
 
         await this.adminsRepository.createAdmin({
             username: defaultUsername,
-            passwordHash: hashedPassword,
-            salt: salt
+            passwordHash: hashedPassword
         });
     }
 
@@ -49,12 +47,10 @@ export class AdminsService {
         }
 
         const hashed_password = await createHash(createAdminDto.password);
-        const salt = 'salt';
 
         await this.adminsRepository.createAdmin({
             username: createAdminDto.username,
-            passwordHash: hashed_password,
-            salt: salt
+            passwordHash: hashed_password
         });
     }
 

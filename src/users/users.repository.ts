@@ -12,8 +12,8 @@ export class UsersRepository {
     constructor(private readonly db: DbService) {}
 
     async createUser(userData: CreateUserData): Promise<void> {
-        const sql = `INSERT INTO user (name, last_name_1, last_name_2, email, password, salt) 
-            VALUES (?,?,?,?,?,?);`;
+        const sql = `INSERT INTO user (name, last_name_1, last_name_2, email, password) 
+            VALUES (?,?,?,?,?);`;
         await this.db
             .getPool()
             .query(sql, [
@@ -21,8 +21,7 @@ export class UsersRepository {
                 userData.lastName1,
                 userData.lastName2,
                 userData.email,
-                userData.passwordHash,
-                userData.salt
+                userData.passwordHash
             ]);
     }
 
@@ -47,7 +46,6 @@ export class UsersRepository {
         last_name_2 as lastName2,
         email,
         password,
-        salt,
         active
     FROM user WHERE id = ?;`;
         const [rows] = await this.db.getPool().query(sql, [id]);
@@ -63,7 +61,6 @@ export class UsersRepository {
         last_name_2 as lastName2,
         email,
         password,
-        salt,
         active
     FROM user WHERE email = ?;`;
         const [rows] = await this.db.getPool().query(sql, [email]);

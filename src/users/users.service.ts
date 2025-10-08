@@ -23,15 +23,13 @@ export class UsersService {
         }
 
         const hashedPassword = await createHash(createUserDto.password);
-        const salt = 'test';
 
         await this.usersRepository.createUser({
             name: createUserDto.name,
             lastName1: createUserDto.lastName1,
             lastName2: createUserDto.lastName2,
             email: createUserDto.email,
-            passwordHash: hashedPassword,
-            salt
+            passwordHash: hashedPassword
         });
     }
 

@@ -7,7 +7,6 @@ export interface BaseUser {
 
 export interface CreateUserData extends BaseUser {
     passwordHash: string;
-    salt: string;
 }
 
 export interface UserData extends BaseUser {
@@ -16,7 +15,6 @@ export interface UserData extends BaseUser {
 
 export interface UserDb extends UserData {
     password: string;
-    salt: string;
     active: boolean;
 }
 

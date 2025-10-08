@@ -12,16 +12,12 @@ export class AdminsRepository {
     constructor(private readonly db: DbService) {}
 
     async createAdmin(adminData: CreateAdminData): Promise<void> {
-        const sql = `INSERT INTO admin(username, password, salt)
-        VALUES(?,?,?);`;
+        const sql = `INSERT INTO admin(username, password)
+        VALUES(?,?);`;
 
         await this.db
             .getPool()
-            .query(sql, [
-                adminData.username,
-                adminData.passwordHash,
-                adminData.salt
-            ]);
+            .query(sql, [adminData.username, adminData.passwordHash]);
     }
 
     async count(): Promise<number> {
